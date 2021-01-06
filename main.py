@@ -34,19 +34,20 @@ class Jeu :
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
                         perso = pygame.image.load("perso40x40u.png").convert_alpha()
-                        if perso_y >= 40:
+                        if perso_y >= 40 and self.ecran.get_at((perso_x+5, perso_y-30)) != (50, 50, 50, 255):
                             perso_y -= 40
+
                     if event.key == pygame.K_DOWN:
                         perso = pygame.image.load("perso40x40d.png").convert_alpha()
-                        if perso_y <= 400:
+                        if perso_y <= 400 and self.ecran.get_at((perso_x+5, perso_y+70)) != (50, 50, 50, 255):
                             perso_y += 40
                     if event.key == pygame.K_LEFT:
                         perso = pygame.image.load("perso40x40l.png").convert_alpha()
-                        if perso_x >= 40:
+                        if perso_x >= 40 and self.ecran.get_at((perso_x-30, perso_y+5)) != (50, 50, 50, 255):
                             perso_x -= 40
                     if event.key == pygame.K_RIGHT:
                         perso = pygame.image.load("perso40x40r.png").convert_alpha()
-                        if perso_x <= 360:
+                        if perso_x <= 360 and self.ecran.get_at((perso_x+70, perso_y+5)) != (50, 50, 50, 255):
                             perso_x += 40
 
             self.ecran.fill((50,150,50))                                            # foret
