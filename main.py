@@ -175,12 +175,6 @@ class Jeu :
                     if event.key == pygame.K_SPACE:
                         self.prevCase(perso_x,perso_y)
                         self.perteAction()
-                    print("-----")
-                    print("vie : ", self.hero.vie)
-                    print("hydratation : ", self.hero.hydratation)
-                    print("satiete : ", self.hero.satiete)
-                    print("moral : ", self.hero.moral)
-                    print("diplomes : ", self.hero.nbDiplome)
 
             self.mapCreation()
             self.ecran.blit(perso, (perso_x, perso_y))
