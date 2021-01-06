@@ -77,7 +77,7 @@ class Maison(Case):
             heros.satiete = heros.satieteMax
         if heros.hydratation > heros.hydratationMax:
             heros.hydratation = heros.hydratationMax
-        if chanceMaillot > 95:
+        if chanceMaillot > 95 and heros.maillot == False:
             heros.maillot = True
             return "Maillot trouvé"
         if chanceSoin > 60:
@@ -85,12 +85,6 @@ class Maison(Case):
         if heros.vie > heros.vieMax:
             heros.vie = heros.vieMax
 
-        if heros.malade:
-            heros.malade = False
-            heros.moral -= 20
-            heros.satiete -= 20
-            heros.hydratation -= 20
-            return "Vous êtes guéris"
         return "RIEN"
 
 
@@ -165,14 +159,17 @@ class Bar(Case):
         chanceDiplome = random.randint(1, 100)
         chanceMaillot = random.randint(1, 100)
 
-        if chanceDiplome > 95:
-            heros.bonusDiplome += 5
         if chanceMaillot > 95:
             heros.maillot = True
+            return "Maillot trouvé"
+        if chanceDiplome > 95:
+            heros.bonusDiplome += 5
+            return "Ennoncé trouvé"
         if heros.moral > heros.moralMax:
             heros.moral = heros.moralMax
         if heros.hydratation > heros.hydratationMax:
             heros.hydratation = heros.hydratationMax
+        return "RIEN"
 
 
 class Route(Case):
@@ -237,6 +234,11 @@ class Foret(Case):
         self.mi = mi
         self.type = "foret"
 
+    def actionForet(self, hero):
+        chanceMaladie = random.randint(1, 100)
+        if chanceMaladie > 95:
+            hero.vie -= 10
+            return "Vous êtes tombé malade"
 
 class Grisee(Case):
     def __init__(self, ni, mi):
@@ -249,7 +251,6 @@ class Heros:
     pseudo = ""
     nbDiplome = 0
     type = ""
-    malade = False
     maillot = False
     vie = 100
     vieMax = 100
@@ -284,12 +285,6 @@ class Heros:
             self.hydratation = self.hydratationMax = 75
             self.satiete = self.satieteMax = 75
             self.moral = self.moralMax = 50
-
-    def maladie(self):
-        chance = random.randint(1, 100)
-
-        if chance > 90:
-            self.malade = True
 
     def mourir(self):
         if self.vie <= 0 or self.hydratation <= 0 or self.satiete <= 0 or self.moral <= 0 or self.nbArrestation >= 3:

@@ -1,6 +1,7 @@
 import pygame
 import sys
 import classFile
+import random
 
 class Grille:
     def __init__(self, ecran):
@@ -99,6 +100,10 @@ class Jeu :
 
     def prevCase(self, x, y):
         prev = self.ecran.get_at((x+2, y+2))
+        chanceMaladie = random.randint(1, 100)
+        if chanceMaladie > 95:
+            self.hero.vie -= 10
+            return "Vous êtes tombé malade"
         if prev == (200,0,0,255):
             return self.home.actionMaison(self.hero)
         if prev == (0,0,100,255):
@@ -108,7 +113,7 @@ class Jeu :
         if prev == (255,255,0,255):
             self.food.actionFastFood(self.hero)
         if prev == (100,0,100,255):
-            self.bar.actionBar(self.hero)
+            return self.bar.actionBar(self.hero)
         if prev == (150, 150, 150, 255):
             trottoir = classFile.Trottoir(x, y)
             return trottoir.piegeTrottoir(self.hero)
@@ -201,7 +206,7 @@ class Jeu :
 
             if lastEvent != "RIEN":
                 labelEvent = eventFont.render(str(lastEvent), 1, (0, 0, 0))
-            self.ecran.blit(labelEvent, (480, 400))
+            self.ecran.blit(labelEvent, (450, 400))
 
             self.hero.mourir()
             if self.hero.mort:
