@@ -62,9 +62,9 @@ class Jeu :
         myFont = pygame.font.SysFont("Arial", 12)
         labelVie = myFont.render("vie", 1, (0, 0, 0))
         labelHydr = myFont.render("Hydratation", 1, (0, 0, 0))
-        labelSati = myFont.render("Satiete", 1, (0, 0, 0))
+        labelSati = myFont.render("Satiété", 1, (0, 0, 0))
         labelMora = myFont.render("Moral", 1, (0, 0, 0))
-        labelNbDiplomes = myFont.render("Diplomes", 1, (0, 0, 0))
+        labelNbDiplomes = myFont.render("Diplômes", 1, (0, 0, 0))
         nbDiplomes = myFont.render(str(self.hero.nbDiplome), 1, (0, 0, 0))
 
         pygame.draw.rect(self.ecran, (100, 155, 155), (440, 0, 180, 480))  # interface de droite
@@ -96,18 +96,28 @@ class Jeu :
 
         self.grille.afficher()
 
+
     def prevCase(self, x, y):
         prev = self.ecran.get_at((x+2, y+2))
         if prev == (200,0,0,255):
-            self.home.actionMaison(self.hero)
+            return self.home.actionMaison(self.hero)
         if prev == (0,0,100,255):
-            self.lib.actionBibliotheque(self.hero)
+            return self.lib.actionBibliotheque(self.hero)
         if prev == (0,255,255,255):
-            self.uni.actionUniversite(self.hero)
+            return self.uni.actionUniversite(self.hero)
         if prev == (255,255,0,255):
             self.food.actionFastFood(self.hero)
         if prev == (100,0,100,255):
             self.bar.actionBar(self.hero)
+        if prev == (150, 150, 150, 255):
+            trottoir = classFile.Trottoir(x, y)
+            return trottoir.piegeTrottoir(self.hero)
+        if prev == (0, 0, 0, 255):
+            route = classFile.Route(x, y)
+            return route.piegeRoute(self.hero)
+        else:
+            return "RIEN"
+
 
     def perteDeplacement(self):
         if self.hero.type=="standard":
@@ -121,26 +131,35 @@ class Jeu :
             self.hero.hydratation -= 2
         if self.hero.type=="hommePresse":
             self.hero.moral -= 2
-    def perteAction(self):
-        if self.hero.type=="standard":
-            self.hero.vie -= 1
-            self.hero.moral -= 1
-            self.hero.satiete -= 1
-            self.hero.hydratation -= 1
-        if self.hero.type=="hippie":
-            self.hero.vie -= 0.5
-            self.hero.satiete -= 0.5
-            self.hero.hydratation -= 0.5
-        if self.hero.type=="hommePresse":
-            self.hero.vie -= 1
-            self.hero.moral -= 1
-            self.hero.satiete -= 1
-            self.hero.hydratation -= 1
+
+
+    def perteAction(self, x, y):
+        prev = self.ecran.get_at((x + 2, y + 2))
+        print(prev)
+        if prev == (200, 0, 0, 255) or prev == (0,0,100,255) or prev == (0,255,255,255) or prev == (255,255,0,255) or prev == (100,0,100,255):
+            if self.hero.type=="standard":
+                self.hero.vie -= 1
+                self.hero.moral -= 1
+                self.hero.satiete -= 1
+                self.hero.hydratation -= 1
+            if self.hero.type=="hippie":
+                self.hero.vie -= 0.5
+                self.hero.satiete -= 0.5
+                self.hero.hydratation -= 0.5
+            if self.hero.type=="hommePresse":
+                self.hero.vie -= 1
+                self.hero.moral -= 1
+                self.hero.satiete -= 1
+                self.hero.hydratation -= 1
+
 
     def mainFonction(self):
         perso = pygame.image.load("perso40x40u.png").convert_alpha()
         perso_x = 240
         perso_y = 240
+        lastEvent = "RIEN"
+        eventFont = pygame.font.SysFont("Arial", 14)
+        labelEvent = eventFont.render("", 1, (0, 0, 0))
 
         while self.jeuEnCours:
             for event in pygame.event.get():
@@ -151,34 +170,38 @@ class Jeu :
                     if event.key == pygame.K_UP:
                         perso = pygame.image.load("perso40x40u.png").convert_alpha()
                         if perso_y >= 40 and self.ecran.get_at((perso_x+5, perso_y-30)) != (50, 50, 50, 255) and (self.ecran.get_at((perso_x+5, perso_y-30)) != (0, 150, 150, 255) or self.hero.maillot):
-                            self.prevCase(perso_x, perso_y)
+                            lastEvent = self.prevCase(perso_x, perso_y)
                             perso_y -= 40
                             self.perteDeplacement()
                     if event.key == pygame.K_DOWN:
                         perso = pygame.image.load("perso40x40d.png").convert_alpha()
                         if perso_y <= 400 and self.ecran.get_at((perso_x+5, perso_y+70)) != (50, 50, 50, 255) and (self.ecran.get_at((perso_x+5, perso_y+70)) != (0, 150, 150, 255) or self.hero.maillot):
-                            self.prevCase(perso_x, perso_y)
+                            lastEvent = self.prevCase(perso_x, perso_y)
                             perso_y += 40
                             self.perteDeplacement()
                     if event.key == pygame.K_LEFT:
                         perso = pygame.image.load("perso40x40l.png").convert_alpha()
                         if perso_x >= 40 and self.ecran.get_at((perso_x-30, perso_y+5)) != (50, 50, 50, 255) and (self.ecran.get_at((perso_x-30, perso_y+5)) != (0, 150, 150, 255) or self.hero.maillot):
-                            self.prevCase(perso_x, perso_y)
+                            lastEvent = self.prevCase(perso_x, perso_y)
                             perso_x -= 40
                             self.perteDeplacement()
                     if event.key == pygame.K_RIGHT:
                         perso = pygame.image.load("perso40x40r.png").convert_alpha()
                         if perso_x <= 360 and self.ecran.get_at((perso_x+70, perso_y+5)) != (50, 50, 50, 255) and (self.ecran.get_at((perso_x+70, perso_y+5)) != (0, 150, 150, 255) or self.hero.maillot):
-                            self.prevCase(perso_x, perso_y)
+                            lastEvent = self.prevCase(perso_x, perso_y)
                             perso_x += 40
                             self.perteDeplacement()
                     if event.key == pygame.K_SPACE:
-                        self.prevCase(perso_x,perso_y)
-                        self.perteAction()
+                        lastEvent = self.prevCase(perso_x,perso_y)
+                        self.perteAction(perso_x, perso_y)
 
             self.mapCreation()
             self.ecran.blit(perso, (perso_x, perso_y))
             self.hero.position = classFile.Case(perso_x, perso_y)
+
+            if lastEvent != "RIEN":
+                labelEvent = eventFont.render(str(lastEvent), 1, (0, 0, 0))
+            self.ecran.blit(labelEvent, (480, 400))
 
             self.hero.mourir()
             if self.hero.mort:

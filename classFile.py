@@ -79,8 +79,9 @@ class Maison(Case):
             heros.hydratation = heros.hydratationMax
         if chanceMaillot > 95:
             heros.maillot = True
-        if chanceSoin > 80:
-            heros.vie += 10
+            return "Maillot trouvé"
+        if chanceSoin > 60:
+            heros.vie += 5
         if heros.vie > heros.vieMax:
             heros.vie = heros.vieMax
 
@@ -89,6 +90,8 @@ class Maison(Case):
             heros.moral -= 20
             heros.satiete -= 20
             heros.hydratation -= 20
+            return "Vous êtes guéris"
+        return "RIEN"
 
 
 class Bibliotheque(Case):
@@ -105,6 +108,9 @@ class Bibliotheque(Case):
             heros.moral = heros.moralMax
         if chance > 95:
             heros.bonusDiplome += 10
+            return "Livre trouvé"
+        else:
+            return "RIEN"
 
 
 class FastFood(Case):
@@ -141,6 +147,9 @@ class Universite(Case):
             heros.moral += 5
             if heros.moral > heros.moralMax:
                 heros.moral = heros.moralMax
+            return "Diplome obtenu"
+        else:
+            return "RIEN"
 
 
 class Bar(Case):
@@ -178,12 +187,18 @@ class Route(Case):
             choixPiege = random.randint(1, 3)
             if choixPiege == 1:   # feu rouge
                 heros.vie -= 1
+                return "Feu rouge"
             if choixPiege == 2:   # Police
                 heros.moral -= 1
                 heros.nbArrestation += 1
+                return "Police"
             if choixPiege == 3:   # Nid de poule
                 heros.hydratation -= 2
                 heros.satiete -= 2
+                return  "Nid de poule"
+        else:
+            return "RIEN"
+
 
 
 class Trottoir(Case):
@@ -198,10 +213,15 @@ class Trottoir(Case):
             choixPiege = random.randint(1,3)
             if choixPiege == 1:   # Peau de banane
                 heros.vie -= 3
+                return "Peau de banane"
             if choixPiege == 2:   # Poussette
                 heros.moral -= 2
+                return "Poussette"
             if choixPiege == 3:   # Caca de chien
                 heros.satiete -= 1
+                return "Caca de chien"
+        else:
+            return "RIEN"
 
 
 class Eau(Case):
