@@ -156,19 +156,19 @@ class Bar(Case):
         heros.moral += 10
         heros.hydratation += 25
         heros.vie -= 5
+        if heros.moral > heros.moralMax:
+            heros.moral = heros.moralMax
+        if heros.hydratation > heros.hydratationMax:
+            heros.hydratation = heros.hydratationMax
+
         chanceDiplome = random.randint(1, 100)
         chanceMaillot = random.randint(1, 100)
-
         if chanceMaillot > 95:
             heros.maillot = True
             return "Maillot trouvé"
         if chanceDiplome > 95:
             heros.bonusDiplome += 5
             return "Ennoncé trouvé"
-        if heros.moral > heros.moralMax:
-            heros.moral = heros.moralMax
-        if heros.hydratation > heros.hydratationMax:
-            heros.hydratation = heros.hydratationMax
         return "RIEN"
 
 
@@ -193,8 +193,17 @@ class Route(Case):
                 heros.hydratation -= 2
                 heros.satiete -= 2
                 return  "Nid de poule"
-        else:
-            return "RIEN"
+        if heros.vehicule == "velo":
+            chanceMort = random.randint(1,1000)
+            if chanceMort > 995:
+                heros.vie -= 100
+                return "Accident de vélo"
+        if heros.vehicule == "voiture":
+            chanceMort = random.randint(1,100)
+            if chanceMort > 98:
+                heros.vie -= 100
+                return "Accident de voiture"
+        return "RIEN"
 
 
 class Trottoir(Case):
@@ -216,8 +225,7 @@ class Trottoir(Case):
             if choixPiege == 3:   # Caca de chien
                 heros.satiete -= 1
                 return "Caca de chien"
-        else:
-            return "RIEN"
+        return "RIEN"
 
 
 class Eau(Case):

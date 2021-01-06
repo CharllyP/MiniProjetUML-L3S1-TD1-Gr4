@@ -18,6 +18,7 @@ class Grille:
         for ligne in self.lignes :
             pygame.draw.line(self.ecran, (25, 25, 25), ligne[0], ligne[1], 1)
 
+
 class Menu:
     def __init__(self):
         self.ecran = pygame.display.set_mode((630, 480))
@@ -84,7 +85,6 @@ class Menu:
             pygame.display.flip()
 
         return self.type, self.vehicule
-
 
 
 class Jeu:
@@ -199,7 +199,7 @@ class Jeu:
             return "RIEN"
 
 
-    def perteDeplacement(self):
+    def perteDeplacement(self, x, y, n, m):
         if self.hero.type=="standard":
             self.hero.vie -= 1
             self.hero.moral -= 1
@@ -211,11 +211,21 @@ class Jeu:
             self.hero.hydratation -= 2
         if self.hero.type=="hommePresse":
             self.hero.moral -= 2
+        if self.ecran.get_at((x, y)) == (150, 150, 150, 255):
+            if self.ecran.get_at((n, m)) != (150, 150, 150, 255):
+                self.hero.hydratation -= 10
+                self.hero.satiete -= 10
+        if self.ecran.get_at((x, y)) == (0, 0, 0, 255):
+            if self.ecran.get_at((n, m)) != (0, 0, 0, 255):
+                if self.hero.vehicule == "velo":
+                    self.hero.hydratation -= 5
+                    self.hero.satiete -= 5
+                if self.hero.vehicule == "voiture":
+                    self.hero.moral -= 2
 
 
     def perteAction(self, x, y):
         prev = self.ecran.get_at((x + 2, y + 2))
-        print(prev)
         if prev == (200, 0, 0, 255) or prev == (0,0,100,255) or prev == (0,255,255,255) or prev == (255,255,0,255) or prev == (100,0,100,255):
             if self.hero.type=="standard":
                 self.hero.vie -= 1
@@ -238,6 +248,7 @@ class Jeu:
         perso_x = 240
         perso_y = 240
         lastEvent = "RIEN"
+        copyEvent = "RIEN"
         eventFont = pygame.font.SysFont("Arial", 14)
         labelEvent = eventFont.render("", 1, (0, 0, 0))
 
@@ -250,28 +261,38 @@ class Jeu:
                         perso = pygame.image.load("perso40x40u.png").convert_alpha()
                         if perso_y >= 40 and self.ecran.get_at((perso_x+5, perso_y-30)) != (50, 50, 50, 255) and (self.ecran.get_at((perso_x+5, perso_y-30)) != (0, 150, 150, 255) or self.hero.maillot):
                             lastEvent = self.prevCase(perso_x, perso_y)
+                            if lastEvent != "RIEN":
+                                copyEvent = lastEvent
                             perso_y -= 40
-                            self.perteDeplacement()
+                            self.perteDeplacement(perso_x+3, perso_y+50, perso_x+3, perso_y+3)
                     if event.key == pygame.K_DOWN:
                         perso = pygame.image.load("perso40x40d.png").convert_alpha()
                         if perso_y <= 400 and self.ecran.get_at((perso_x+5, perso_y+70)) != (50, 50, 50, 255) and (self.ecran.get_at((perso_x+5, perso_y+70)) != (0, 150, 150, 255) or self.hero.maillot):
                             lastEvent = self.prevCase(perso_x, perso_y)
+                            if lastEvent != "RIEN":
+                                copyEvent = lastEvent
                             perso_y += 40
-                            self.perteDeplacement()
+                            self.perteDeplacement(perso_x+3, perso_y-10, perso_x+3, perso_y+3)
                     if event.key == pygame.K_LEFT:
                         perso = pygame.image.load("perso40x40l.png").convert_alpha()
                         if perso_x >= 40 and self.ecran.get_at((perso_x-30, perso_y+5)) != (50, 50, 50, 255) and (self.ecran.get_at((perso_x-30, perso_y+5)) != (0, 150, 150, 255) or self.hero.maillot):
                             lastEvent = self.prevCase(perso_x, perso_y)
+                            if lastEvent != "RIEN":
+                                copyEvent = lastEvent
                             perso_x -= 40
-                            self.perteDeplacement()
+                            self.perteDeplacement(perso_x+50, perso_y+3, perso_x+3, perso_y+3)
                     if event.key == pygame.K_RIGHT:
                         perso = pygame.image.load("perso40x40r.png").convert_alpha()
                         if perso_x <= 360 and self.ecran.get_at((perso_x+70, perso_y+5)) != (50, 50, 50, 255) and (self.ecran.get_at((perso_x+70, perso_y+5)) != (0, 150, 150, 255) or self.hero.maillot):
                             lastEvent = self.prevCase(perso_x, perso_y)
+                            if lastEvent != "RIEN":
+                                copyEvent = lastEvent
                             perso_x += 40
-                            self.perteDeplacement()
+                            self.perteDeplacement(perso_x-10, perso_y+3, perso_x+3, perso_y+3)
                     if event.key == pygame.K_SPACE:
                         lastEvent = self.prevCase(perso_x,perso_y)
+                        if lastEvent != "RIEN":
+                            copyEvent = lastEvent
                         self.perteAction(perso_x, perso_y)
 
             self.mapCreation()
@@ -288,18 +309,26 @@ class Jeu:
                 endFont = pygame.font.SysFont("Arial", 24)
                 end = endFont.render("Game Over", 1, (200, 200, 200))
                 score = endFont.render("Score : "+str(self.hero.nbDiplome), 1, (200, 200, 200))
+                finalEvent = endFont.render("Dernier évenement : "+str(copyEvent), 1, (100, 100, 100))
                 self.ecran.blit(end, (250, 150))
                 self.ecran.blit(score, (255, 250))
+                self.ecran.blit(finalEvent, (25, 400))
                 pygame.display.flip()
-                time.sleep(3)
+                time.sleep(2.5)
                 self.jeuEnCours = False
 
             pygame.display.flip()
 
 
-
 if __name__ == '__main__':
     pygame.init()
-    list = Menu().mainFonction()
-    Jeu(list[0], list[1]).mainFonction()
+
+    application = True
+    while application:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                sys.exit()
+            list = Menu().mainFonction()
+            Jeu(list[0], list[1]).mainFonction()
+
     pygame.quit()
