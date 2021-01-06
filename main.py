@@ -18,13 +18,82 @@ class Grille:
         for ligne in self.lignes :
             pygame.draw.line(self.ecran, (25, 25, 25), ligne[0], ligne[1], 1)
 
-class Jeu :
-    def __init__(self, name, type):
+class Menu:
+    def __init__(self):
         self.ecran = pygame.display.set_mode((630, 480))
-        pygame.display.set_caption('Quand on arrive en ville')
+        self.menuPersoEnCours = True
+        self.menuVehiculeEnCours = True
+        pygame.display.set_caption('Quand on arrive en ville - menu')
+        self.ecran.fill((200, 100, 150))
+        self.type = ""
+        self. vehicule = ""
+
+
+    def mainFonction(self):
+        fontMenu = pygame.font.SysFont("Arial", 20)
+        fontTitre = pygame.font.SysFont("Arial", 32)
+        while self.menuPersoEnCours:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_1:
+                        self.type = "standard"
+                        self.menuPersoEnCours = False
+                    if event.key == pygame.K_2:
+                        self.type = "hippie"
+                        self.vehicule = "velo"
+                        self.menuPersoEnCours = False
+                        self.menuVehiculeEnCours = False
+                    if event.key == pygame.K_3:
+                        self.type = "hommePresse"
+                        self.menuPersoEnCours = False
+
+            self.ecran.fill((200, 100, 150))
+            labelMenuPerso = fontTitre.render("Choisissez votre type : ", 1, (0, 0, 0))
+            labelStandard = fontMenu.render("1. Standard", 1, (0, 0, 0))
+            labelHippie = fontMenu.render("2. Hippie", 1, (0, 0, 0))
+            labelHommePresse = fontMenu.render("3. Homme Pressé", 1, (0, 0, 0))
+            self.ecran.blit(labelMenuPerso, (125, 100))
+            self.ecran.blit(labelStandard, (250, 200))
+            self.ecran.blit(labelHippie, (250, 250))
+            self.ecran.blit(labelHommePresse, (250, 300))
+
+            pygame.display.flip()
+
+        while self.menuVehiculeEnCours:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_1:
+                        self.vehicule = "velo"
+                        self.menuVehiculeEnCours = False
+                    if event.key == pygame.K_2:
+                        self.vehicule = "voiture"
+                        self.menuVehiculeEnCours = False
+
+            self.ecran.fill((200, 100, 150))
+            labelMenuVehicule = fontTitre.render("Choisissez votre véhicule : ", 1, (0, 0, 0))
+            labelVelo = fontMenu.render("1. Vélo", 1, (0, 0, 0))
+            labelVoiture = fontMenu.render("2. Voiture", 1, (0, 0, 0))
+            self.ecran.blit(labelMenuVehicule, (125, 100))
+            self.ecran.blit(labelVelo, (250, 200))
+            self.ecran.blit(labelVoiture, (250, 300))
+
+            pygame.display.flip()
+
+        return self.type, self.vehicule
+
+
+
+class Jeu:
+    def __init__(self, type, vehicule):
+        self.ecran = pygame.display.set_mode((630, 480))
+        pygame.display.set_caption('Quand on arrive en ville - jeu')
         self.jeuEnCours = True
         self.grille = Grille(self.ecran)
-        self.hero = classFile.Heros(name, type)
+        self.hero = classFile.Heros(type, vehicule)
         self.home = classFile.Maison(240, 240)
         self.lib = classFile.Bibliotheque(320, 80)
         self.uni = classFile.Universite(120, 400)
@@ -231,5 +300,6 @@ class Jeu :
 
 if __name__ == '__main__':
     pygame.init()
-    Jeu("charlly", "hippie").mainFonction()       # exemple menu à faire
+    list = Menu().mainFonction()
+    Jeu(list[0], list[1]).mainFonction()
     pygame.quit()

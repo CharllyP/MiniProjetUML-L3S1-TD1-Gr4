@@ -197,7 +197,6 @@ class Route(Case):
             return "RIEN"
 
 
-
 class Trottoir(Case):
     def __init__(self, ni, mi):
         self.ni = ni
@@ -248,7 +247,6 @@ class Grisee(Case):
 
 
 class Heros:
-    pseudo = ""
     nbDiplome = 0
     type = ""
     maillot = False
@@ -267,9 +265,9 @@ class Heros:
     prevCase = Case(0,0)
     mort = False
 
-    def __init__(self, name, type):
-        self.pseudo = name
+    def __init__(self, type, vehicule):
         self.type = type
+        self.vehicule = vehicule
         if type == "standard":
             self.vie = self.vieMax = 75
             self.hydratation = self.hydratationMax = 75
@@ -300,7 +298,6 @@ class Etat:
 
     def sauvegarder(self, heros, map, numeroSave):
         fichierSave = open("save"+str(numeroSave)+".txt", "w")
-        fichierSave.write(heros.pseudo+"\n")
         fichierSave.write(heros.nbDiplome+"\n")
         fichierSave.write(heros.type+"\n")
         fichierSave.write(heros.malade+"\n")
