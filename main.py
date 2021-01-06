@@ -14,7 +14,7 @@ class Grille:
 
     def afficher(self):
         for ligne in self.lignes :
-            pygame.draw.line(self.ecran, (25,25,25), ligne[0],ligne[1],1)
+            pygame.draw.line(self.ecran, (25, 25, 25), ligne[0], ligne[1], 1)
 
 class Jeu :
     def __init__(self):
