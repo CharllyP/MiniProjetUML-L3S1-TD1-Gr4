@@ -7,6 +7,10 @@ class Case:
     mi = 0
     type = ""
 
+    def __init__(self, ni, mi):
+        self.ni = ni
+        self.mi = mi
+
 
 class Map:
     larg = 0
@@ -238,8 +242,9 @@ class Heros:
     bonusDiplome = 0
     nbArrestation = 0
     vehicule = ""
-    position = Case()
-    prevCase = Case()
+    position = Case(0,0)
+    prevCase = Case(0,0)
+    mort = False
 
     def __init__(self, name, type):
         self.pseudo = name
