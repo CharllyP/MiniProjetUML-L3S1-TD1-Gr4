@@ -268,8 +268,7 @@ class Heros:
 
     def mourir(self):
         if self.vie <= 0 or self.hydratation <= 0 or self.satiete <= 0 or self.moral <= 0 or self.nbArrestation >= 3:
-            print("t mor mdr")                                                                                          #A FAIRE
-
+            self.mort = True
 
 class Etat:
     etatheros = Heros
