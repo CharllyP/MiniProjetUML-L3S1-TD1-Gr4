@@ -73,12 +73,12 @@ class Maison(Case):
             heros.satiete = heros.satieteMax
         if heros.hydratation > heros.hydratationMax:
             heros.hydratation = heros.hydratationMax
-        if heros.vie > heros.vieMax:
-            heros.vie = heros.vieMax
         if chanceMaillot > 95:
             heros.maillot = True
-        if chanceSoin > 95:
+        if chanceSoin > 80:
             heros.vie += 10
+        if heros.vie > heros.vieMax:
+            heros.vie = heros.vieMax
 
         if heros.malade:
             heros.malade = False
