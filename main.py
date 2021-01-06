@@ -2,6 +2,7 @@ import pygame
 import sys
 import classFile
 import random
+import time
 
 class Grille:
     def __init__(self, ecran):
@@ -19,7 +20,7 @@ class Grille:
 
 class Jeu :
     def __init__(self, name, type):
-        self.ecran = pygame.display.set_mode((620, 480))
+        self.ecran = pygame.display.set_mode((630, 480))
         pygame.display.set_caption('Quand on arrive en ville')
         self.jeuEnCours = True
         self.grille = Grille(self.ecran)
@@ -29,6 +30,7 @@ class Jeu :
         self.uni = classFile.Universite(120, 400)
         self.food = classFile.FastFood(160, 160)
         self.bar = classFile.Bar(320, 360)
+
 
     def mapCreation(self):
         self.ecran.fill((50, 150, 50))  # foret
@@ -67,8 +69,10 @@ class Jeu :
         labelMora = myFont.render("Moral", 1, (0, 0, 0))
         labelNbDiplomes = myFont.render("Diplômes", 1, (0, 0, 0))
         nbDiplomes = myFont.render(str(self.hero.nbDiplome), 1, (0, 0, 0))
+        labelNbArrestations = myFont.render("Arrestations", 1, (0, 0, 0))
+        nbArrestations = myFont.render(str(self.hero.nbArrestation), 1, (0, 0, 0))
 
-        pygame.draw.rect(self.ecran, (100, 155, 155), (440, 0, 180, 480))  # interface de droite
+        pygame.draw.rect(self.ecran, (100, 155, 155), (440, 0, 190, 480))  # interface de droite
         pygame.draw.rect(self.ecran, (50, 50, 50), (450, 20, self.hero.vieMax, 10))
         pygame.draw.rect(self.ecran, (200, 0, 0), (450, 20, self.hero.vie, 10))
         self.ecran.blit(labelVie, (555, 20))
@@ -83,6 +87,8 @@ class Jeu :
         self.ecran.blit(labelMora, (555, 80))
         self.ecran.blit(labelNbDiplomes, (555, 100))
         self.ecran.blit(nbDiplomes, (480, 100))
+        self.ecran.blit(labelNbArrestations, (555, 120))
+        self.ecran.blit(nbArrestations, (480, 120))
 
         pygame.draw.rect(self.ecran, (200, 0, 0), (240, 240, 40, 40))   # maison
         self.ecran.blit(pygame.image.load("home.png").convert_alpha(), (240,240))
@@ -170,7 +176,6 @@ class Jeu :
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     sys.exit()
-
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_UP:
                         perso = pygame.image.load("perso40x40u.png").convert_alpha()
@@ -216,6 +221,9 @@ class Jeu :
                 score = endFont.render("Score : "+str(self.hero.nbDiplome), 1, (200, 200, 200))
                 self.ecran.blit(end, (250, 150))
                 self.ecran.blit(score, (255, 250))
+                pygame.display.flip()
+                time.sleep(3)
+                self.jeuEnCours = False
 
             pygame.display.flip()
 
@@ -223,5 +231,5 @@ class Jeu :
 
 if __name__ == '__main__':
     pygame.init()
-    Jeu("charlly", "standard").mainFonction()       # exemple
+    Jeu("charlly", "hippie").mainFonction()       # exemple menu à faire
     pygame.quit()
