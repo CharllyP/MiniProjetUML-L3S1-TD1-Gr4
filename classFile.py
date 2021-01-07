@@ -79,7 +79,7 @@ class Maison(Case):
             heros.hydratation = heros.hydratationMax
         if chanceMaillot > 95 and heros.maillot == False:
             heros.maillot = True
-            return "Maillot trouvé"
+            return "Maillot trouve"
         if chanceSoin > 60:
             heros.vie += 5
         if heros.vie > heros.vieMax:
@@ -102,7 +102,7 @@ class Bibliotheque(Case):
             heros.moral = heros.moralMax
         if chance > 95:
             heros.bonusDiplome += 10
-            return "Livre trouvé"
+            return "Livre trouve"
         else:
             return "RIEN"
 
@@ -165,10 +165,10 @@ class Bar(Case):
         chanceMaillot = random.randint(1, 100)
         if chanceMaillot > 95:
             heros.maillot = True
-            return "Maillot trouvé"
+            return "Maillot trouve"
         if chanceDiplome > 95:
             heros.bonusDiplome += 5
-            return "Ennoncé trouvé"
+            return "Ennonce trouve"
         return "RIEN"
 
 
@@ -197,7 +197,7 @@ class Route(Case):
             chanceMort = random.randint(1,1000)
             if chanceMort > 995:
                 heros.vie -= 100
-                return "Accident de vélo"
+                return "Accident de velo"
         if heros.vehicule == "voiture":
             chanceMort = random.randint(1,100)
             if chanceMort > 98:
@@ -245,7 +245,7 @@ class Foret(Case):
         chanceMaladie = random.randint(1, 100)
         if chanceMaladie > 95:
             hero.vie -= 10
-            return "Vous êtes tombé malade"
+            return "Vous etes tombe malade"
 
 class Grisee(Case):
     def __init__(self, ni, mi):

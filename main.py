@@ -54,7 +54,7 @@ class Menu:
             labelMenuPerso = fontTitre.render("Choisissez votre type : ", 1, (0, 0, 0))
             labelStandard = fontMenu.render("1. Standard", 1, (0, 0, 0))
             labelHippie = fontMenu.render("2. Hippie", 1, (0, 0, 0))
-            labelHommePresse = fontMenu.render("3. Homme Pressé", 1, (0, 0, 0))
+            labelHommePresse = fontMenu.render("3. Homme Presse", 1, (0, 0, 0))
             self.ecran.blit(labelMenuPerso, (125, 100))
             self.ecran.blit(labelStandard, (250, 200))
             self.ecran.blit(labelHippie, (250, 250))
@@ -75,8 +75,8 @@ class Menu:
                         self.menuVehiculeEnCours = False
 
             self.ecran.fill((200, 100, 150))
-            labelMenuVehicule = fontTitre.render("Choisissez votre véhicule : ", 1, (0, 0, 0))
-            labelVelo = fontMenu.render("1. Vélo", 1, (0, 0, 0))
+            labelMenuVehicule = fontTitre.render("Choisissez votre vehicule : ", 1, (0, 0, 0))
+            labelVelo = fontMenu.render("1. Velo", 1, (0, 0, 0))
             labelVoiture = fontMenu.render("2. Voiture", 1, (0, 0, 0))
             self.ecran.blit(labelMenuVehicule, (125, 100))
             self.ecran.blit(labelVelo, (250, 200))
@@ -110,13 +110,13 @@ class Jeu:
         pygame.draw.rect(self.ecran, (0, 150, 150), (40, 200, 80, 80))  # eau de gauche 2
         pygame.draw.rect(self.ecran, (0, 150, 150), (80, 240, 80, 160))  # eau de gauche 3
 
-        pygame.draw.rect(self.ecran, (50, 50, 50), (80, 40, 40, 120))  # grisée haut gauche 1
-        pygame.draw.rect(self.ecran, (50, 50, 50), (40, 80, 120, 40))  # grisée haut gauche 2
-        pygame.draw.rect(self.ecran, (50, 50, 50), (160, 280, 80, 80))  # grisée milieu
-        pygame.draw.rect(self.ecran, (50, 50, 50), (40, 360, 80, 80))  # grisée bas carre
-        pygame.draw.rect(self.ecran, (50, 50, 50), (280, 440, 80, 40))  # grisée bas
-        pygame.draw.rect(self.ecran, (50, 50, 50), (400, 200, 40, 160))  # grisée droite
-        pygame.draw.rect(self.ecran, (50, 50, 50), (280, 120, 40, 40))  # grisée droite petit
+        pygame.draw.rect(self.ecran, (50, 50, 50), (80, 40, 40, 120))  # grisee haut gauche 1
+        pygame.draw.rect(self.ecran, (50, 50, 50), (40, 80, 120, 40))  # grisee haut gauche 2
+        pygame.draw.rect(self.ecran, (50, 50, 50), (160, 280, 80, 80))  # grisee milieu
+        pygame.draw.rect(self.ecran, (50, 50, 50), (40, 360, 80, 80))  # grisee bas carre
+        pygame.draw.rect(self.ecran, (50, 50, 50), (280, 440, 80, 40))  # grisee bas
+        pygame.draw.rect(self.ecran, (50, 50, 50), (400, 200, 40, 160))  # grisee droite
+        pygame.draw.rect(self.ecran, (50, 50, 50), (280, 120, 40, 40))  # grisee droite petit
 
         pygame.draw.rect(self.ecran, (150, 150, 150), (320, 120, 40, 120))  # trottoir droite
         pygame.draw.rect(self.ecran, (150, 150, 150), (160, 200, 40, 80))  # trottoir gauche
@@ -134,9 +134,9 @@ class Jeu:
         myFont = pygame.font.SysFont("Arial", 12)
         labelVie = myFont.render("vie", 1, (0, 0, 0))
         labelHydr = myFont.render("Hydratation", 1, (0, 0, 0))
-        labelSati = myFont.render("Satiété", 1, (0, 0, 0))
+        labelSati = myFont.render("Satiete", 1, (0, 0, 0))
         labelMora = myFont.render("Moral", 1, (0, 0, 0))
-        labelNbDiplomes = myFont.render("Diplômes", 1, (0, 0, 0))
+        labelNbDiplomes = myFont.render("Diplomes", 1, (0, 0, 0))
         nbDiplomes = myFont.render(str(self.hero.nbDiplome), 1, (0, 0, 0))
         labelNbArrestations = myFont.render("Arrestations", 1, (0, 0, 0))
         nbArrestations = myFont.render(str(self.hero.nbArrestation), 1, (0, 0, 0))
@@ -178,7 +178,7 @@ class Jeu:
         chanceMaladie = random.randint(1, 100)
         if chanceMaladie > 95:
             self.hero.vie -= 10
-            return "Vous êtes tombé malade"
+            return "Vous etes tombe malade"
         if prev == (200,0,0,255):
             return self.home.actionMaison(self.hero)
         if prev == (0,0,100,255):
@@ -309,7 +309,7 @@ class Jeu:
                 endFont = pygame.font.SysFont("Arial", 24)
                 end = endFont.render("Game Over", 1, (200, 200, 200))
                 score = endFont.render("Score : "+str(self.hero.nbDiplome), 1, (200, 200, 200))
-                finalEvent = endFont.render("Dernier évenement : "+str(copyEvent), 1, (100, 100, 100))
+                finalEvent = endFont.render("Dernier evenement : "+str(copyEvent), 1, (100, 100, 100))
                 self.ecran.blit(end, (250, 150))
                 self.ecran.blit(score, (255, 250))
                 self.ecran.blit(finalEvent, (25, 400))
